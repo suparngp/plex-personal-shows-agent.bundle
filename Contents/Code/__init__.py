@@ -40,7 +40,7 @@ class JSONAgent(Agent.TV_Shows):
 
     def update(self, metadata, media, lang):
         Log('I am in update')
-        
+        Log(media.seasons.keys())
         Log(dir(media.seasons['1']))
         Log(media.seasons['1'].title)
         main_path = media.seasons['1'].episodes['1'].items[0].parts[0].file
@@ -59,12 +59,16 @@ class JSONAgent(Agent.TV_Shows):
         metadata.studio = meta_json['publisher']
     
         for season_index in media.seasons.keys():
+            episode_keys = media.seasons[season_index].episodes.keys()
+            first_episode_path = media.seasons[season_index].episodes[episode_keys[0]].items[0].parts[0].file
             metadata.seasons[season_index].posters[meta_json['season_thumbnails'][season_index]] = Proxy.Preview(None)
-            season_path = os.path.normpath(os.path.join(main_path, '../'))
+            season_path = os.path.normpath(os.path.join(first_episode_path, '../'))
+            Log(season_path)
             metadata.seasons[season_index].summary = os.path.basename(season_path)
             self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
             for episode_index in media.seasons[season_index].episodes.keys():
                 episode_path = media.seasons[season_index].episodes[episode_index].items[0].parts[0].file
                 episode_file_name = os.path.basename(episode_path)
-                episode_name = os.path.splitext(episode_file_name)[0]
+                filtered_name = os.path.splitext(episode_file_name)[0].replace('S%sE%s - ' % (season_index, episode_index), '')
+                episode_name = '%s - %s' %(str(episode_index).zfill(2), filtered_name)
                 metadata.seasons[season_index].episodes[episode_index].title = episode_name
