@@ -17,7 +17,7 @@ This agent helps manage personal shows like tutorials, home videos which are not
 
 ## Installation
 
-1. Download the zip from this github repo.
+1. Download the latest release zip from the Releases Page.
 1. Extract.
 1. Delete the `docs` folder if you think the size is too big. It contains the images shown in this readme.
 1. Rename the downloaded folder from `---.bundle-master` to `---.bundle`.
