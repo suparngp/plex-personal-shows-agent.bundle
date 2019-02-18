@@ -52,6 +52,9 @@ class PersonalShowsAgent(Agent.TV_Shows):
                 poster_path = link
             else:
                 poster_path = os.path.normpath(os.path.join(base_path, link))
+                if not os.path.exists(poster_path):
+                    poster_path = os.path.normpath(os.path.join(base_path, '../', link))
+            
             Log.Info('Poster path %s' % (poster_path))
             data = Core.storage.load(poster_path)
             media_hash = hashlib.md5(data).hexdigest()
@@ -96,10 +99,9 @@ class PersonalShowsAgent(Agent.TV_Shows):
             season_metadata.summary = os.path.basename(season_path)
 
             if meta_json:
-                season_thumbs = meta_json.get('season_thumbnails')
-                if season_thumbs:
-                    clear_posters(season_metadata)
-                    self.update_poster(season_metadata, season_thumbs.get(season_index, 'cover.jpg'), season_path)
+                season_thumbs = meta_json.get('season_thumbnails', {})
+                clear_posters(season_metadata)
+                self.update_poster(season_metadata, season_thumbs.get(season_index, 'cover.jpg'), season_path)
 
             self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
 
