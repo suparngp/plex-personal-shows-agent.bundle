@@ -1,5 +1,7 @@
 import os, json
 import urllib
+import hashlib
+from Helpers import clear_posters
 
 class PersonalShowsAgent(Agent.TV_Shows):
     name = 'Personal Shows'
@@ -31,6 +33,32 @@ class PersonalShowsAgent(Agent.TV_Shows):
         request = HTTP.Request(url=('http://%s/library/sections/%s/all?summary.value=%s&type=3&id=%s' % (host, section_id, urllib.quote(summary), season_id)), method='PUT' )        
         request.load()
 
+    def update_poster(self, metadata, link, base_path = None):
+        try:
+            Log.Info('Updating poster link: %s base: %s' % (link, base_path))
+            if not link or not metadata:
+                Log.Info('Skipping poster update. Link or metadata missing')
+                return
+            
+            if link.startswith('http://') or link.startswith('https://'):
+                metadata.posters[link] = Proxy.Preview(None)
+                return
+            
+            if not link.startswith('/') and not base_path:
+                Log.Info('Skipping poster update, link is relative and base path is missing')
+                return
+            
+            if link.startswith('/'):
+                poster_path = link
+            else:
+                poster_path = os.path.normpath(os.path.join(base_path, link))
+            Log.Info('Poster path %s' % (poster_path))
+            data = Core.storage.load(poster_path)
+            media_hash = hashlib.md5(data).hexdigest()
+            metadata.posters[media_hash] = Proxy.Media(data)
+        except Exception as e:
+            Log.Error('Error updating poster %s' % e.message)
+
     def update(self, metadata, media, lang):
         Log.Info('Updating Metadata')
         
@@ -45,7 +73,6 @@ class PersonalShowsAgent(Agent.TV_Shows):
         if os.path.exists(meta_path):
             meta_json = json.loads(Core.storage.load(meta_path))
             Log.Info(meta_json)
-            metadata.posters[meta_json.get('show_thumbnail', '')] = Proxy.Preview(None)
             metadata.studio = meta_json.get('publisher', '')
             metadata.genres.clear()
             for genre in meta_json.get('tags', []):
@@ -58,17 +85,22 @@ class PersonalShowsAgent(Agent.TV_Shows):
                 role.name = actor.get('name', '')
                 role.photo = actor.get('photo', '')
             
+            clear_posters(metadata)
+            self.update_poster(metadata, meta_json.get('show_thumbnail', ''), show_path)
+
         for season_index in media.seasons.keys():
             season_metadata = metadata.seasons[season_index]
             episode_keys = media.seasons[season_index].episodes.keys()
             first_episode_path = media.seasons[season_index].episodes[episode_keys[0]].items[0].parts[0].file
+            season_path = os.path.normpath(os.path.join(first_episode_path, '../'))
+            season_metadata.summary = os.path.basename(season_path)
+
             if meta_json:
                 season_thumbs = meta_json.get('season_thumbnails')
                 if season_thumbs:
-                    season_metadata.posters[season_thumbs.get(season_index, '')] = Proxy.Preview(None)
+                    clear_posters(season_metadata)
+                    self.update_poster(season_metadata, season_thumbs.get(season_index, ''), season_path)
 
-            season_path = os.path.normpath(os.path.join(first_episode_path, '../'))
-            season_metadata.summary = os.path.basename(season_path)
             self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
 
             for episode_index in media.seasons[season_index].episodes.keys():

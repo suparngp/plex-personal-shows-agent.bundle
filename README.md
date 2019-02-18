@@ -60,14 +60,14 @@ You can add additional metadata like posters etc. To do that, create a `meta.jso
     "actors": [{
         "name": "Danny Gill",
         "role": "Guitarist",
-        "photo": "https://example.com/actor_avatar"
+        "photo": "https://example.com/actor_avatar" // This must be a URL. It seems like plex does not support local files for cast.
     }],
     "publisher": "Lick Library",
     "tags": ["Tutorials", "Guitar", "Music Theory"],
     "show_thumbnail": "https://example.com/show_poster",
     "season_thumbnails": {
         "1": "https://example.com/season_1_poster",
-        "2": "https://example.com/season_2_poster"
+        "2": "poster.png" // season_2 / poster.png
     }
 }
 ```
