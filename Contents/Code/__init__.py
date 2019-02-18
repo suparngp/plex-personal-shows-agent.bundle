@@ -1,8 +1,5 @@
 import os, json
 import urllib
-import sys
-import Framework
-
 
 class PersonalShowsAgent(Agent.TV_Shows):
     name = 'Personal Shows'
