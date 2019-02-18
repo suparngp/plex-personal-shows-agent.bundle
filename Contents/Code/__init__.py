@@ -20,6 +20,11 @@ class JSONAgent(Agent.TV_Shows):
         port = Prefs['port']
         username = Prefs['username']
         password = Prefs['password']
+        
+        if not ip_address or not port or not username or not password:
+            Log.Info('Missing Preferences, Skipping Summary Update')
+            return
+
         host = '%s:%s' % (ip_address, port)
         HTTP.SetPassword(host, username, password)
 
@@ -68,7 +73,7 @@ class JSONAgent(Agent.TV_Shows):
             season_path = os.path.normpath(os.path.join(first_episode_path, '../'))
             season_metadata.summary = os.path.basename(season_path)
             self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
-            
+
             for episode_index in media.seasons[season_index].episodes.keys():
                 episode_metadata = season_metadata.episodes[episode_index]
                 episode_path = media.seasons[season_index].episodes[episode_index].items[0].parts[0].file
