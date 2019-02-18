@@ -15,7 +15,28 @@ This agent helps manage personal shows like tutorials, home videos which are not
 
 ![Season View](docs/season.png)
 
-## Naming
+## Installation
+
+1. Download the zip from this github repo.
+1. Extract.
+1. Delete the `docs` folder if you think the size is too big. It contains the images shown in this readme.
+1. Rename the downloaded folder from `---.bundle-master` to `---.bundle`.
+1. Place it in `~/Library/Application Support/Plex Media Server/Plug-Ins` directory.
+
+
+## Configuration
+
+Choose `Personal Shows` agent in `Advanced` section of your library.
+
+### Preferences
+
+There is a bug in Plex where it does not update the database with season summary from the XML. So, to get around it, this agent updates the summary using the HTTP API. To do that, it needs to generate an API token. That is why, it requires the network information and the credentials to your plex. However, if you don't feel good about typing the credentials, you can simply leave all the fields empty and the agent will not update the season's summary with folder name.
+
+Just note that the credentials never leave your network as long as your plex is on the local network. So its not any more unsafe than lets say adding your opensubtitles credentials. But, up to you!
+
+![Season View](docs/preferences.png)
+
+### Naming
 
 Name your shows in the following manner:
 
@@ -49,9 +70,3 @@ You can add additional metadata like posters etc. To do that, create a `meta.jso
     }
 }
 ```
-
-## Preferences
-
-There is a bug in Plex where it does not update the database with season summary from the XML. So, to get around it, this agent updates the summary using the HTTP API. To do that, it needs to generate an API token. That is why, it requires the network information and the credentials to your plex. However, if you don't feel good about typing the credentials, you can simply leave all the fields empty and the agent will not update the season's summary with folder name.
-
-Just note that the credentials never leave your network as long as your plex is on the local network. So its not any more unsafe than lets say adding your opensubtitles credentials. But, up to you!
