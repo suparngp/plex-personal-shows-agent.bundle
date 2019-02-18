@@ -40,11 +40,12 @@ Just note that the credentials never leave your network as long as your plex is 
 
 Name your shows in the following manner:
 
+```
 Tutorials
 --- Guitar Scales #This is the show name
 ------ The Ionian Mode # This is the Season or group name
 ---------- S1E0 - Introduction # This is the first episode of season 1. You can use E1 as well.
-
+```
 ![Directory View](docs/directory.png)
 
 #### Just make sure that you DON'T pad the season and episode numbers for 0s. For example, use S1E1 instead of S01E01. Otherwise, the Episode names will contain S01E01 section in plex as well.
