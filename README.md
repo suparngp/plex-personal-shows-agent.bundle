@@ -42,8 +42,10 @@ Name your shows in the following manner:
 
 ```
 Tutorials
---- Guitar Scales #This is the show name
+--- Guitar Scales # This is the show name
+------ cover.jpg # default poster for the show
 ------ The Ionian Mode # This is the Season or group name
+---------- cover.jpg # default poster for the season
 ---------- S1E0 - Introduction # This is the first episode of season 1. You can use E1 as well.
 ```
 ![Directory View](docs/directory.png)
@@ -64,10 +66,10 @@ You can add additional metadata like posters etc. To do that, create a `meta.jso
     }],
     "publisher": "Lick Library",
     "tags": ["Tutorials", "Guitar", "Music Theory"],
-    "show_thumbnail": "https://example.com/show_poster",
+    "show_thumbnail": "https://example.com/show_poster", // defaults to cover.jpg in the show root folder. can be a relative path in show folder
     "season_thumbnails": {
-        "1": "https://example.com/season_1_poster",
-        "2": "poster.png" // season_2 / poster.png
+        "1": "https://example.com/season_1_poster", // defaults to cover.jpg in the season folder
+        "2": "poster.png" // season_2/poster.png relative path to the cover in season folder
     }
 }
 ```

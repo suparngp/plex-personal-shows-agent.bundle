@@ -86,7 +86,7 @@ class PersonalShowsAgent(Agent.TV_Shows):
                 role.photo = actor.get('photo', '')
             
             clear_posters(metadata)
-            self.update_poster(metadata, meta_json.get('show_thumbnail', ''), show_path)
+            self.update_poster(metadata, meta_json.get('show_thumbnail', 'cover.jpg'), show_path)
 
         for season_index in media.seasons.keys():
             season_metadata = metadata.seasons[season_index]
@@ -99,7 +99,7 @@ class PersonalShowsAgent(Agent.TV_Shows):
                 season_thumbs = meta_json.get('season_thumbnails')
                 if season_thumbs:
                     clear_posters(season_metadata)
-                    self.update_poster(season_metadata, season_thumbs.get(season_index, ''), season_path)
+                    self.update_poster(season_metadata, season_thumbs.get(season_index, 'cover.jpg'), season_path)
 
             self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
 
