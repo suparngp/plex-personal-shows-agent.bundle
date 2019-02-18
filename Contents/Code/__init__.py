@@ -4,7 +4,7 @@ import sys
 import Framework
 
 
-class JSONAgent(Agent.TV_Shows):
+class PersonalShowsAgent(Agent.TV_Shows):
     name = 'Personal Shows'
     languages = [Locale.Language.NoLanguage]
     primary_provider = True
