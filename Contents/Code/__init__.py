@@ -70,9 +70,6 @@ class PersonalShowsAgent(Agent.TV_Shows):
         show_path = os.path.normpath(os.path.join(main_path, '../'))
         meta_path = os.path.join(show_path, 'meta.json')
 
-        Log.Info(show_path)
-        Log.Info(meta_path)
-        Log.Info(os.path.exists(meta_path))
         if not os.path.exists(meta_path):
             show_path = os.path.normpath(os.path.join(main_path, '../../'))
             meta_path = os.path.join(show_path, 'meta.json')
