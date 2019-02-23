@@ -106,12 +106,11 @@ class PersonalShowsAgent(Agent.TV_Shows):
             season_summary = season_name
             
 
-            if meta_json:
-                season_thumbs = meta_json.get('season_thumbnails', {})
+            if meta_json and 'seasons' in meta_json and season_index in meta_json['seasons']:
+                season_meta_json = meta_json['seasons'][season_index]
                 clear_posters(season_metadata)
-                self.update_poster(season_metadata, season_thumbs.get(season_index, 'cover.jpg'), season_path)
-                if 'seasons' in meta_json and season_index in meta_json['seasons']:
-                    season_summary = ('%s\n%s' % (season_name, meta_json['seasons'][season_index].get('summary', ''))).strip()
+                self.update_poster(season_metadata, season_meta_json.get('poster', 'cover.jpg'), season_path)
+                season_summary = ('%s\n%s' % (season_name, meta_json['seasons'][season_index].get('summary', ''))).strip()                    
 
             season_metadata.summary = season_summary
 
