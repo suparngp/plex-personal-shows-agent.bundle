@@ -80,6 +80,7 @@ class PersonalShowsAgent(Agent.TV_Shows):
         if os.path.exists(meta_path):
             meta_json = json.loads(Core.storage.load(meta_path))
             Log.Info(meta_json)
+            metadata.summary = meta_json.get('summary', '')
             metadata.studio = meta_json.get('publisher', '')
             metadata.genres.clear()
             for genre in meta_json.get('tags', []):
@@ -100,15 +101,22 @@ class PersonalShowsAgent(Agent.TV_Shows):
             episode_keys = media.seasons[season_index].episodes.keys()
             first_episode_path = media.seasons[season_index].episodes[episode_keys[0]].items[0].parts[0].file
             season_path = os.path.normpath(os.path.join(first_episode_path, '../'))
-            season_metadata.summary = os.path.basename(season_path)
+            season_name = os.path.basename(season_path)
+
+            season_summary = season_name
+            
 
             if meta_json:
                 season_thumbs = meta_json.get('season_thumbnails', {})
                 clear_posters(season_metadata)
                 self.update_poster(season_metadata, season_thumbs.get(season_index, 'cover.jpg'), season_path)
+                if 'seasons' in meta_json and season_index in meta_json['seasons']:
+                    season_summary = ('%s\n%s' % (season_name, meta_json['seasons'][season_index].get('summary', ''))).strip()
 
-            self.update_season(media.seasons[season_index].id, os.path.basename(season_path))
+            season_metadata.summary = season_summary
 
+            self.update_season(media.seasons[season_index].id, season_summary)
+            
             for episode_index in media.seasons[season_index].episodes.keys():
                 episode_metadata = season_metadata.episodes[episode_index]
                 episode_path = media.seasons[season_index].episodes[episode_index].items[0].parts[0].file
