@@ -4,8 +4,8 @@ This agent helps manage personal shows like tutorials, home videos which are not
 
 ## Final Output
 
-1. All your Personal Shows will be displayed as TV shows with seasons and episodes. 
-1. The season will have its title stored as `summary`. 
+1. All your Personal Shows will be displayed as TV shows with seasons and episodes.
+1. The season will have its title stored as `summary`.
 1. Episodes will derive their names from the file names excluding the `S1E1` part to make them cleaner.
 1. Each Show can have its custom poster.
 1. Each Season can have its custom poster.
@@ -22,7 +22,6 @@ This agent helps manage personal shows like tutorials, home videos which are not
 1. Delete the `docs` folder if you think the size is too big. It contains the images shown in this readme.
 1. Rename the downloaded folder from `---.bundle-master` to `---.bundle`.
 1. Place it in `~/Library/Application Support/Plex Media Server/Plug-Ins` directory.
-
 
 ## Configuration
 
@@ -48,10 +47,10 @@ Tutorials
 ---------- cover.jpg # default poster for the season
 ---------- S1E0 - Introduction # This is the first episode of season 1. You can use E1 as well.
 ```
+
 ![Directory View](docs/directory.png)
 
 #### Just make sure that you DON'T pad the season and episode numbers for 0s. For example, use S1E1 instead of S01E01. Otherwise, the Episode names will contain S01E01 section in plex as well.
-
 
 ## Additional Metadata
 
@@ -65,6 +64,8 @@ You can add additional metadata like posters etc. To do that, create a `meta.jso
         "photo": "https://example.com/actor_avatar" // This must be a URL. It seems like plex does not support local files for cast.
     }],
     "publisher": "Lick Library",
+    "collections": ["Collection 1", "Collection 2"],
+    "available_at": "YYYY-MM-DD",
     "tags": ["Tutorials", "Guitar", "Music Theory"],
     "show_thumbnail": "https://example.com/show_poster", // defaults to cover.jpg in the show root folder. can be a relative path in show folder
     "season_thumbnails": {

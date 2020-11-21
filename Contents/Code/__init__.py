@@ -82,6 +82,12 @@ class PersonalShowsAgent(Agent.TV_Shows):
             Log.Info(meta_json)
             metadata.summary = meta_json.get('summary', '')
             metadata.studio = meta_json.get('publisher', '')
+            
+            metadata.originally_available_at = Datetime.ParseDate(meta_json.get('available_date', '1900-01-01')).date()
+            metadata.collections.clear()
+            for collections in meta_json.get('collections', []):
+                metadata.collections.add(collections)
+
             metadata.genres.clear()
             for genre in meta_json.get('tags', []):
                 metadata.genres.add(genre)
